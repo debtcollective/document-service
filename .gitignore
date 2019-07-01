@@ -1,0 +1,6 @@
+dist
+pdf
+package.zip
+.serverless
+node_modules
+coverage
