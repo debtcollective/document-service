@@ -33,8 +33,7 @@ const DocumentHandler = (() => {
   return new TestDocument();
 })();
 
-// NOTE: CI is not able to run this since it relies on Chromium instance
-describe.skip("generateFiles", () => {
+describe("generateFiles", () => {
   let browser;
 
   beforeAll(() => {
