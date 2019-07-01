@@ -1,0 +1,5 @@
+{
+  "extends": ["config:base"],
+  "schedule": ["before 11pm on Monday"],
+  "packageRules": []
+}
