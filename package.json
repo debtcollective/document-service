@@ -1,0 +1,60 @@
+{
+  "name": "@debtcollective/document-generation",
+  "version": "1.0.0",
+  "description": "Serverless service to handle document generation",
+  "engines": {
+    "node": "^8.10.0"
+  },
+  "scripts": {
+    "babel": "rm -rf dist && mkdir dist && ./node_modules/.bin/babel src --out-dir dist",
+    "lint": "./node_modules/.bin/eslint src",
+    "local": "yarn babel && cp -a src/templates/. dist/templates && cp -r node_modules dist && node dist/local/index.js",
+    "package-nochrome": "yarn package-prepare && cd dist && zip -rq ../package.zip .",
+    "package-prepare": "yarn lint && yarn babel && cp -r package.json dist && cd dist && yarn --production && cp -a ../src/templates/. ./templates",
+    "package": "yarn package-prepare && cp chrome/headless_shell.tar.gz dist && cd dist && zip -rq ../package.zip .",
+    "pre-commit": "lint-staged",
+    "test:ci": "yarn test:coverage",
+    "test:coverage": "jest --coverage",
+    "test": "jest"
+  },
+  "dependencies": {
+    "babel-eslint": "^10.0.1",
+    "chrome-aws-lambda": "1.18.0",
+    "handlebars": "^4.1.2",
+    "html-pdf-chrome": "^0.5.0",
+    "puppeteer-core": "^1.17.0",
+    "tar": "^4.0.1",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-decorators": "^7.4.4",
+    "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
+    "@babel/plugin-proposal-function-sent": "^7.2.0",
+    "@babel/plugin-proposal-numeric-separator": "^7.2.0",
+    "@babel/plugin-proposal-throw-expressions": "^7.2.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/plugin-syntax-import-meta": "^7.2.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-flow": "^7.0.0",
+    "aws-sdk": "^2.473.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-flowtype": "^3.10.3",
+    "faker": "^4.1.0",
+    "serverless-hooks-plugin": "^1.1.0"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier-eslint --write",
+      "flow focus-check",
+      "git add",
+      "eslint --fix"
+    ],
+    "*.{json,md}": [
+      "prettier-eslint --write",
+      "git add"
+    ]
+  }
+}
