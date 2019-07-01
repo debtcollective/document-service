@@ -40,7 +40,7 @@
     "@babel/preset-env": "7.4.5",
     "@babel/preset-flow": "7.0.0",
     "aws-sdk": "2.485.0",
-    "eslint": "5.16.0",
+    "eslint": "6.0.1",
     "eslint-plugin-flowtype": "3.11.1",
     "eslint-plugin-jest": "22.7.1",
     "faker": "4.1.0",
