@@ -43,6 +43,11 @@
     "eslint": "^5.16.0",
     "eslint-plugin-flowtype": "^3.10.3",
     "faker": "^4.1.0",
+    "flow-bin": "^0.102.0",
+    "husky": "^2.7.0",
+    "jest": "^24.8.0",
+    "lint-staged": "^8.2.1",
+    "prettier-eslint-cli": "^5.0.0",
     "serverless-hooks-plugin": "^1.1.0"
   },
   "lint-staged": {
@@ -56,5 +61,11 @@
       "prettier-eslint --write",
       "git add"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn pre-commit",
+      "post-commit": "git update-index --again"
+    }
   }
 }
