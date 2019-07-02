@@ -1,7 +1,47 @@
-<h1>Credit Report Dispute</h1>
-<div class="header">
-    <h1>{{dispute.id}}</h1>
-</div>
-<div class="body">
-    <p>{{user.name}}</p>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <style>
+    #letter {
+      font-size: 10pt;
+      font-family: "Times New Roman", Times, serif;
+      text-align: justify;
+    }
+
+    .user-info>p {
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="letter">
+    <p>Date: <strong>{{date}}</strong></p>
+    <p>Re: Credit Report Errors</p>
+    <p>Dear Sir or Madam:</p>
+    <p>I have discovered inaccurate information on my credit reports. The reports are in my name, <strong>{{user.name}}</strong>.</p>
+    {{#if creditors}}<p>The creditors or collectors that are reporting me for debts that I do not owe include: <strong>{{creditors}}</strong>.</p>{{/if}}
+    <p>Please find enclosed a copy of the portions of the credit reports containing the mistaken data.</p>
+    <p>
+      Please investigate all of the above matters with the creditors in question and send me written confirmation that
+      the items have been removed. In addition, please make this letter a permanent part of my credit record.
+    </p>
+    <p>
+      According to the Fair Credit Reporting Act, it is your duty to investigate my dispute within a 30 day period
+      after receiving this request. If you find that the disputed items are inaccurate or that they cannot be verified, it is your duty to remove the items from my report.
+      Please send me a corrected copy of my report. If you have any questions about my request or any of the credit
+      information in question, please do not hesitate to call me at <strong>{{user.phoneNumber}}</strong>.
+    </p>
+    <p>Thank you for your prompt attention to my request.</p><br />
+    <div class="user-info">
+      <p>{{user.name}}</p>
+      <p>{{user.address}}</p>
+      <p>{{user.address2}}</p><br />
+      <p>Date of Birth: {{user.dob}}</p>
+      <p>Social Security Number: {{user.ssn}}</p>
+      <p>Email: {{user.email}}</p>
+      <p>Phone: {{user.phoneNumber}}</p>
+    </div>
+  </div>
+</body>
