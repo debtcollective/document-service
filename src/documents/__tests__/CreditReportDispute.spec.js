@@ -10,6 +10,10 @@ const fakeData = {
 };
 
 const fullData = {
+  agencies: [
+    { address: [faker.address.streetAddress(), faker.address.streetAddress()] },
+    { address: [faker.address.streetAddress()] },
+  ],
   creditors: [faker.company.companyName(), faker.company.companyName()],
   date: faker.date.recent(),
   user: {
@@ -67,6 +71,9 @@ describe("generateFiles", () => {
     expect(files.length).toEqual(DocumentHandler.templates.length);
     expect(
       readFiles.filter(readFileName => readFileName === files[0].fileName)
+    ).toHaveLength(1);
+    expect(
+      readFiles.filter(readFileName => readFileName === files[1].fileName)
     ).toHaveLength(1);
   });
 });

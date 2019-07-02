@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <style>
+    #letter {
+      font-size: 10pt;
+      font-family: "Times New Roman", Times, serif;
+      text-align: justify;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    p.address {
+      margin: 0 0 0 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="letter">
+    <p>Send to:</p><br />
+    {{#each agencies as |item key|}}
+        <p class="address">{{item.address}}</p>
+    {{/each}}
+  </div>
+</body>
