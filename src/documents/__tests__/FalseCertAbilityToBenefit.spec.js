@@ -3,6 +3,7 @@ import FalseCertAbilityToBenefit from "../FalseCertAbilityToBenefit";
 import fs from "fs";
 import { getBrowser } from "../../setup";
 import path from "path";
+import tmp from "tmp";
 
 const fakeData = {
   disputeId: faker.random.uuid(),
@@ -28,10 +29,11 @@ const fullData = {
   },
 };
 
-const pathToPDFfolder = path.join(__dirname, "../../../pdf");
+const tmpDir = tmp.dirSync();
+const pathToPDFfolder = tmpDir.name;
 const DocumentHandler = FalseCertAbilityToBenefit;
 
-// NOTE: CI is not able to run this since it relies on Chromium instance
+// eslint-disable-next-line jest/no-disabled-tests
 describe.skip("generateFiles", () => {
   let browser;
 
@@ -62,7 +64,7 @@ describe.skip("generateFiles", () => {
     // simulate side effect after process files
     await Promise.all(
       files.map(async ({ fileName, file }) => {
-        const pathToFile = `pdf/${fileName}`;
+        const pathToFile = path.join(pathToPDFfolder, fileName);
         await file.toFile(pathToFile);
       })
     );
