@@ -4,3 +4,4 @@ package.zip
 .serverless
 node_modules
 coverage
+.DS_Store
