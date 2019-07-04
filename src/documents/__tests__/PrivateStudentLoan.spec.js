@@ -32,30 +32,8 @@ const pathToPDFfolder = tmpDir.name;
 const DocumentHandler = PrivateStudentLoan;
 
 describe("generateFiles", () => {
-  let browser;
-
-  beforeAll(() => {
-    // A place to store the created PDFs while development
-    const dir = pathToPDFfolder;
-
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir);
-    }
-
-    browser = getBrowser();
-  });
-
-  beforeEach(() => {
-    fs.readdirSync(pathToPDFfolder).forEach(f =>
-      fs.unlinkSync(path.join(pathToPDFfolder, f))
-    );
-  });
-
-  afterAll(async () => {
-    await browser.close();
-  });
-
   it("creates a file for each template on the document", async () => {
+    const browser = await getBrowser();
     const files = await DocumentHandler.generateFiles(fullData);
 
     // simulate side effect after process files
@@ -71,5 +49,8 @@ describe("generateFiles", () => {
     expect(
       readFiles.filter(readFileName => readFileName === files[0].fileName)
     ).toHaveLength(1);
-  });
+
+    // clean up
+    await browser.close();
+  }, 25000);
 });

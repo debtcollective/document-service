@@ -36,7 +36,7 @@ const DocumentHandler = CreditReportDispute;
 describe("generateFiles", () => {
   let browser;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     // A place to store the created PDFs while development
     const dir = pathToPDFfolder;
 

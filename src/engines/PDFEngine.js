@@ -6,6 +6,8 @@ import handlebars from "handlebars";
 import path from "path";
 import uuid from "uuid";
 
+const port = process.env.CHROME_DEBUGGING_PORT || "9222";
+
 class PDFEngine implements DocumentGeneratorEngine {
   process = async (data: mixed, pathToTemplate: string) => {
     const html = this.interpolateTemplate(data, pathToTemplate);
@@ -24,7 +26,7 @@ class PDFEngine implements DocumentGeneratorEngine {
 
   createFile = async (html: string) => {
     const fileName = `${uuid.v4()}.pdf`;
-    const pdf = await htmlPdf.create(html, { port: 9222 });
+    const pdf = await htmlPdf.create(html, { port });
 
     return [pdf, fileName];
   };

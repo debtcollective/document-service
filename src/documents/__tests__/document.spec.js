@@ -38,7 +38,7 @@ const DocumentHandler = (() => {
 describe("generateFiles", () => {
   let browser;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     // A place to store the created PDFs while development
     const dir = pathToPDFfolder;
 
@@ -46,7 +46,7 @@ describe("generateFiles", () => {
       fs.mkdirSync(dir);
     }
 
-    browser = getBrowser();
+    browser = await getBrowser();
   });
 
   beforeEach(() => {
