@@ -3,14 +3,21 @@
 import chromium from "chrome-aws-lambda";
 
 export const getBrowser = async () => {
-  const browser = await chromium.puppeteer.launch({
-    args: chromium.args.concat(["--remote-debugging-port=9222"]),
-    defaultViewport: chromium.defaultViewport,
-    executablePath:
-      (await chromium.executablePath) ||
-      process.env.CHROME_PATH ||
-      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-    headless: true,
+  // use chrome-aws-lambda only in production
+  if (process.env.NODE_ENV === "production") {
+    const browser = await chromium.puppeteer.launch({
+      args: chromium.args.concat(["--remote-debugging-port=9222"]),
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath,
+      headless: true,
+    });
+
+    return browser;
+  }
+
+  const puppeteer = require("puppeteer");
+  const browser = await puppeteer.launch({
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
 
   return browser;
