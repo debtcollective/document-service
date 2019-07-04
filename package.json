@@ -39,7 +39,7 @@
     "@babel/plugin-syntax-import-meta": "7.2.0",
     "@babel/preset-env": "7.4.5",
     "@babel/preset-flow": "7.0.0",
-    "aws-sdk": "2.485.0",
+    "aws-sdk": "2.488.0",
     "eslint": "6.0.1",
     "eslint-plugin-flowtype": "3.11.1",
     "eslint-plugin-jest": "22.7.1",
