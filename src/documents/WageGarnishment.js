@@ -3,7 +3,7 @@
 import Document from "./Document";
 
 class WageGarnishment extends Document implements DocumentGenerator {
-  slug = "tax-offset-review";
+  slug = "wage-garnishment";
   templates = [`${this.slug}/0.fdf`];
   version = "v1";
 }
