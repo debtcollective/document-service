@@ -32,7 +32,7 @@ const pathToPDFfolder = path.join(__dirname, "../../../pdf");
 const DocumentHandler = TaxOffsetReview;
 
 // NOTE: CI is not able to run this since it relies on Chromium instance
-describe("generateFiles", () => {
+describe.skip("generateFiles", () => {
   let browser;
 
   beforeAll(() => {
