@@ -6,7 +6,7 @@ import path from "path";
 const pathToPDFfolder = path.join(__dirname, "../../../pdf");
 
 // This test fails on the Travis Pipeline
-describe.skip("process", () => {
+describe("process", () => {
   beforeAll(() => {
     // A place to store the created PDFs while development
     const dir = pathToPDFfolder;

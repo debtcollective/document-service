@@ -1,8 +1,13 @@
 // @flow
 
+import _fillPDF from "fill-pdf";
+import fs from "fs";
 import path from "path";
-import pdfFiller from "pdffiller";
+import { promisify } from "util";
+// import pdfFiller from "pdffiller";
 import uuid from "uuid";
+
+const writeFile = promisify(fs.writeFile);
 
 class FDFEngine implements DocumentGeneratorEngine {
   process = async (data: mixed, sourcePDF: string) => {
@@ -19,12 +24,13 @@ class FDFEngine implements DocumentGeneratorEngine {
     data: mixed
   ): Promise<boolean> =>
     new Promise((resolve, reject) => {
-      pdfFiller.fillForm(sourcePDF, destinationPDF, data, err => {
+      _fillPDF.generatePdf(data, sourcePDF, async (err, buffer) => {
         if (err) {
           reject(err);
-        } else {
-          resolve(true);
         }
+
+        await writeFile(destinationPDF, buffer);
+        resolve(true);
       });
     });
 }
