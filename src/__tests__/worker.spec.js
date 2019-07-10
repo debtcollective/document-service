@@ -35,8 +35,8 @@ const event = {
 };
 
 const processedFiles = [
-  { file: { toFile: jest.fn() }, fileName: "foo.pdf" },
-  { file: { toFile: jest.fn() }, fileName: "bar.pdf" },
+  [new Buffer(256), "foo.pdf"],
+  [new Buffer(256), "bar.pdf"],
 ];
 
 beforeAll(() => {
@@ -61,7 +61,7 @@ test("triggers s3 upload method with processed files", async () => {
   await worker.run(event);
 
   expect(s3.upload).toHaveBeenCalledTimes(processedFiles.length);
-  expect(s3.upload).lastCalledWith(processedFiles[processedFiles.length - 1]);
+  expect(s3.upload).toHaveBeenLastCalledWith(...processedFiles[1]);
 });
 
 describe("when message belongs to credit report dispute", () => {

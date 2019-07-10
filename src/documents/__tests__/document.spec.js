@@ -36,7 +36,7 @@ describe("generateFiles", () => {
   })();
 
   it("creates a file for each template on the document", async () => {
-    const files = await DocumentHandler.generateFiles(fullData, templates);
+    const files = await DocumentHandler.generateFiles(fullData);
 
     expect(files.length).toEqual(templates.length);
   });

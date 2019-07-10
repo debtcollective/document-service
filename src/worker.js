@@ -20,7 +20,7 @@ const run = async ({ userId, disputeId }: Params) => {
 
   const files = await DocumentHandler.generateFiles(data);
   const filesUrls = await Promise.all(
-    files.map(async ([file, filename]) => {
+    files.map(([file, filename]) => {
       return s3.upload(file, filename);
     })
   );
