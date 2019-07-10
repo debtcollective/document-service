@@ -1,35 +1,73 @@
 // @flow
 
-import * as htmlPdf from "html-pdf-chrome";
+import _ from "lodash";
+import chromium from "chrome-aws-lambda";
 import fs from "fs";
 import handlebars from "handlebars";
-import path from "path";
 import uuid from "uuid";
 
-const port = process.env.CHROME_DEBUGGING_PORT || "9222";
-
 class PDFEngine implements DocumentGeneratorEngine {
-  process = async (data: mixed, pathToTemplate: string) => {
-    const html = this.interpolateTemplate(data, pathToTemplate);
-    const [pdf, fileName] = await this.createFile(html);
+  process = async (data: mixed, templates: Array<string>) => {
+    const browser = await this.initPuppeteer();
 
-    return [pdf, fileName];
+    const files = await Promise.all(
+      _.map(templates, async pathToTemplate => {
+        const html = this.interpolateTemplate(data, pathToTemplate);
+
+        return this.createFile(html, browser);
+      })
+    );
+
+    // clean up
+    await browser.close();
+
+    return files;
   };
 
   interpolateTemplate = (data: mixed, pathToTemplate: string) => {
-    const templateFile = fs.readFileSync(path.join(__dirname, pathToTemplate));
+    const templateFile = fs.readFileSync(pathToTemplate);
     const template = handlebars.compile(templateFile.toString());
     const html = template(data);
 
     return html;
   };
 
-  createFile = async (html: string) => {
-    const fileName = `${uuid.v4()}.pdf`;
-    const pdf = await htmlPdf.create(html, { port });
+  createFile = async (html: string, browser: any) => {
+    // start puppeteer or use the one provided
+    const page = await browser.newPage();
 
-    return [pdf, fileName];
+    // render HTML
+    await page.setContent(html);
+
+    // TODO: pass default css to make it look like legal documents
+
+    // create the PDF
+    const pdfBuffer = await page.pdf();
+
+    // TODO: make filenames deterministic
+    // generate random filename
+    const filename = `${uuid.v4()}.pdf`;
+
+    // clean up
+    await page.close();
+
+    // return the PDF. If we can return a buffer even better
+    // if we use buffers, we should add a flag to test to persist these buffers
+    return [pdfBuffer, filename];
   };
+
+  async initPuppeteer() {
+    const executablePath = await chromium.executablePath;
+
+    const browser = await chromium.puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: executablePath,
+      headless: process.env.CHROME_HEADLESS || true,
+    });
+
+    return browser;
+  }
 }
 
 export default new PDFEngine();

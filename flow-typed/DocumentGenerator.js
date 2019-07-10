@@ -1,10 +1,8 @@
-import * as htmlPdf from "html-pdf-chrome";
-
 declare interface DocumentGeneratorEngine {
   process(
     data: mixed,
-    pathToTemplate: string
-  ): Promise<[htmlPdf.CreateResult, string]>;
+    templates: Array<string>
+  ): Promise<Array<[Buffer, string]>>;
 }
 
 declare interface DocumentGenerator {
@@ -12,5 +10,5 @@ declare interface DocumentGenerator {
   slug: string;
   version: "v1";
   templates: Array<string>;
-  generateFiles(): Promise<Array<{ file: htmlPdf.CreateResult, fileName: string }>>;
+  generateFiles(): Promise<Array<[Buffer, string]>>;
 }
