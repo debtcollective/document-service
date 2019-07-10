@@ -1,10 +1,7 @@
 import Document from "../Document";
 import faker from "faker";
-import fs from "fs";
-import { getBrowser } from "../../setup";
 import path from "path";
 import PDFEngine from "../../engines/PDFEngine";
-import tmp from "tmp";
 
 const fakeData = {
   disputeId: faker.random.uuid(),
@@ -23,56 +20,24 @@ const fullData = {
   },
 };
 
-const tmpDir = tmp.dirSync();
-const pathToPDFfolder = tmpDir.name;
-const templates = ["credit-report-dispute/0.hbs", "general-dispute/0.hbs"];
-const DocumentHandler = (() => {
-  class TestDocument extends Document {
-    engine = PDFEngine;
-    templates = templates;
-  }
-
-  return new TestDocument();
-})();
-
 describe("generateFiles", () => {
-  let browser;
+  const templates = [
+    path.resolve(__dirname, "../../templates/credit-report-dispute/0.hbs"),
+    path.resolve(__dirname, "../../templates/general-dispute/0.hbs"),
+  ];
 
-  beforeAll(async () => {
-    // A place to store the created PDFs while development
-    const dir = pathToPDFfolder;
-
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir);
+  const DocumentHandler = (() => {
+    class TestDocument extends Document {
+      engine = PDFEngine;
+      templates = templates;
     }
 
-    browser = await getBrowser();
-  });
-
-  beforeEach(() => {
-    fs.readdirSync(pathToPDFfolder).forEach(f =>
-      fs.unlinkSync(path.join(pathToPDFfolder, f))
-    );
-  });
-
-  afterAll(async () => {
-    await browser.close();
-  });
+    return new TestDocument();
+  })();
 
   it("creates a file for each template on the document", async () => {
     const files = await DocumentHandler.generateFiles(fullData, templates);
 
-    // simulate side effect after process files
-    await Promise.all(
-      files.map(async ({ fileName, file }) => {
-        const pathToFile = path.join(pathToPDFfolder, fileName);
-        await file.toFile(pathToFile);
-      })
-    );
-    const readFiles = fs.readdirSync(pathToPDFfolder);
-
     expect(files.length).toEqual(templates.length);
-    expect(files.filter(f => f.fileName === readFiles[0])).toHaveLength(1);
-    expect(files.filter(f => f.fileName === readFiles[1])).toHaveLength(1);
   });
 });
