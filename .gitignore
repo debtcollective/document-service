@@ -5,3 +5,4 @@ package.zip
 node_modules
 coverage
 .DS_Store
+*.log

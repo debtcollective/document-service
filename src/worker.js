@@ -14,10 +14,16 @@ type Params = {
 const run = async ({ userId, disputeId }: Params) => {
   const user = await User.findById(userId);
   const dispute = await Dispute.findById(disputeId);
+
   const data = { dispute, user };
   const DocumentHandler: Document = findBySlug(dispute.toolId);
+
   const files = await DocumentHandler.generateFiles(data);
-  const filesUrls = await Promise.all(files.map(async f => await s3.upload(f)));
+  const filesUrls = await Promise.all(
+    files.map(([file, filename]) => {
+      return s3.upload(file, filename);
+    })
+  );
 
   return filesUrls;
 };

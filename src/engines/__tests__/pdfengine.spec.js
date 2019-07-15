@@ -1,4 +1,5 @@
 import faker from "faker";
+import path from "path";
 import PDFEngine from "../PDFEngine";
 
 describe("interpolateTemplate", () => {
@@ -6,7 +7,7 @@ describe("interpolateTemplate", () => {
     const data = { body: faker.random.word(), title: faker.random.word() };
     const html = await PDFEngine.interpolateTemplate(
       data,
-      "../stubs/dummyTemplate.hbs"
+      path.resolve(__dirname, "../../stubs/dummyTemplate.hbs")
     );
 
     expect(html).toEqual(expect.stringContaining(data.body));

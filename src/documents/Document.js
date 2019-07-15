@@ -1,10 +1,12 @@
 // @flow
 
 class DummyEngine implements DocumentGeneratorEngine {
-  process = async (data: mixed, pathToTemplate: string) => {
-    console.warn("calling process without proper engine", data, pathToTemplate);
+  process = async (data: mixed, templates: Array<string>) => {
+    console.warn("calling process without proper engine", data, templates);
 
-    return Promise.resolve([null, ""]);
+    const buffer = new Buffer(0);
+
+    return Promise.resolve([[buffer, ""]]);
   };
 }
 
@@ -14,18 +16,8 @@ export default class Document implements DocumentGenerator {
   engine = new DummyEngine();
   templates = [];
   generateFiles = async (data: mixed) => {
-    const pathsToTemplate = this.templates.map(
-      template => `../templates/${template}`
-    );
+    const files = await this.engine.process(data, this.templates);
 
-    const processedFiles = await Promise.all(
-      pathsToTemplate.map(async t => {
-        const [pdf, fileName] = await this.engine.process(data, t);
-
-        return { file: pdf, fileName };
-      })
-    );
-
-    return processedFiles;
+    return files;
   };
 }
