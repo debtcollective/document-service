@@ -4,7 +4,7 @@ class DummyEngine implements DocumentGeneratorEngine {
   process = async (data: mixed, templates: Array<string>) => {
     console.warn("calling process without proper engine", data, templates);
 
-    const buffer = new Buffer(256);
+    const buffer = new Buffer(0);
 
     return Promise.resolve([[buffer, ""]]);
   };

@@ -39,8 +39,6 @@ class PDFEngine implements DocumentGeneratorEngine {
     // render HTML
     await page.setContent(html);
 
-    // TODO: pass default css to make it look like legal documents
-
     // create the PDF
     const pdfBuffer = await page.pdf();
 
