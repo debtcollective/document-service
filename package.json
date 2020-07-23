@@ -24,7 +24,7 @@
     "pdffiller": "0.0.11",
     "puppeteer-core": "1.19.0",
     "tar": "4.4.10",
-    "uuid": "3.3.2"
+    "uuid": "3.4.0"
   },
   "devDependencies": {
     "@babel/cli": "7.5.0",
